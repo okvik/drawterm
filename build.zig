@@ -35,19 +35,10 @@ pub fn build(b: *std.Build) !void {
         else => return Error.unsupported_arch,
     };
 
-    const gui_opt = b.option([]const u8, "gui", "GUI subsystem to use") orelse "";
-    var gui: Gui = undefined;
-    if (platform == .win32) {
-        gui = Gui.win32;
-    } else if (platform == .posix) {
-        if (std.mem.eql(u8, gui_opt, "x11")) {
-            gui = Gui.x11;
-        } else if (std.mem.eql(u8, gui_opt, "wl")) {
-            gui = Gui.wl;
-        } else {
-            gui = Gui.x11;
-        }
-    }
+    const gui = b.option(Gui, "gui", "GUI subsystem to use") orelse switch (platform) {
+        .posix => Gui.x11,
+        .win32 => Gui.win32,
+    };
 
     const cflags = switch (platform) {
         .win32 => &[_][]const u8 {
