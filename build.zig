@@ -555,7 +555,6 @@ pub fn build(b: *std.Build) !void {
                     "gui-win32/screen.c",
                 } });
         },
-        else => unreachable,
     }
 
     const libmachdep = b.addStaticLibrary(.{
