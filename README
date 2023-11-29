@@ -1,45 +1,28 @@
-DESCRIPTION
------------
-This is a fork of Russ Cox's drawterm to incorporate features
-from Plan9front (http://9front.org), most importantly DP9IK
-authentication support (see authsrv(6)) and the TLS based rcpu(1)
-protocol.
+# Description
 
+This is a fork of 9front's drawterm with the build system replaced by `build.zig`.
 
-INSTALLATION
---------------
-To build on Unix, run CONF=unix make.
+# Build
 
-To build on Solaris using Sun cc, run CONF=sun make.
+Native build:
 
-To build on Windows, you can't use Visual C. Use Mingw on cygwin.
+```
+zig build -Doptimize=ReleaseSafe
+```
 
-To build on Mac OS X with X11 (xquartz), run CONF=osx-x11 make.
+Cross build:
 
-To build on Mac OS X with Cocoa, run CONF=osx-cocoa make and "cp drawterm gui-cocoa/drawterm.app/".
+```
+zig build -Dtarget=x86-windows-gnu -Doptimize=ReleaseSafe
+```
 
-To build for Android, make sure Make.android* and gui-android/Makefile are correct for your build and target systems, then run make -f Make.android
+# Bugs
 
-USAGE
--------
-On Android the five checkboxes at the top represent the three mouse buttons and mousewheel, determining which "buttons" are clicked. The "kb" button toggles the soft keyboard.
-
-
-CAVEATS
---------
-Be aware that right now on Android the login details are saved as a plaintext string if saved, and there is no secstore support.
-
-
-BINARIES
----------
-http://drawterm.9front.org/
-
-
-SOURCE
-------
-http://git.9front.org/plan9front/drawterm/HEAD/info.html
-
-
-HELP
-----
-No.
+* `Debug` builds produce faulty executables with `UD1` instructions inserted all
+  over the place.  Release builds work fine.
+* Only tested with native `x86_64-linux-gnu` build and cross-compiled for
+  `x86-windows-gnu`.
+* Currently we rely on system library dependencies, which is fine for most
+  cases.  Eventually I'd like to have the dependencies included and built from
+  source to produce self-contained binaries. This is also important for cross-
+  compilation.
