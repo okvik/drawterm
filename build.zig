@@ -611,6 +611,7 @@ pub fn build(b: *std.Build) !void {
                 },
                 else => return Error.unsupported_arch
             }
+            drawterm.addWin32ResourceFile(.{ .file = .{ .path = "drawterm.rc" } });
         },
         else => {}
     }
